@@ -5,6 +5,11 @@ pipeline {
         choice(name: 'BRANCH', choices: ['master', 'dev'], description: 'Branch to build')
     }
     stages {
+         stage('Checkout') {
+            steps {
+                git url: 'https://github.com/PeterPorzuczek/TimeRiddle.git', branch: 'master'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
@@ -23,9 +28,11 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                expression { params.DEPLOY }
+            }
             steps {
-                echo 'Deploying..'
-                // Skrypty do deploymentu aplikacji
+                echo 'Wdrażanie aplikacji...'
             }
         }
     }
